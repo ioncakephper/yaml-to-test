@@ -1,0 +1,15 @@
+{
+  "name": "yaml-to-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/ioncakephper/yaml-to-test"
+  },
+  "author": "ioncakephper",
+  "license": "MIT"
+}
