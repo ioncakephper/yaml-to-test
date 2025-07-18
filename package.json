@@ -11,5 +11,8 @@
     "url": "github.com/ioncakephper/yaml-to-test"
   },
   "author": "ioncakephper",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^14.0.0"
+  }
 }
