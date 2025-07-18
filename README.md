@@ -1,10 +1,10 @@
 # YAML to TEST CLI Tool
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Node.js CI](https://github.com/ioncakephper/yaml-to-test-cli/actions/workflows/node.js.yml/badge.svg)](https://github.com/ioncakephper/yaml-to-test-cli/actions)
-[![npm version](https://img.shields.io/npm/v/yaml-to-test-cli.svg)](https://www.npmjs.com/package/yaml-to-test-cli)
-[![Issues](https://img.shields.io/github/issues/ioncakephper/yaml-to-test-cli.svg)](https://github.com/ioncakephper/yaml-to-test-cli/issues)
-[![Discussions](https://img.shields.io/github/discussions/ioncakephper/yaml-to-test-cli.svg)](https://github.com/ioncakephper/yaml-to-test-cli/discussions)
+[![Node.js CI](https://github.com/ioncakephper/yaml-to-test/actions/workflows/node.js.yml/badge.svg)](https://github.com/ioncakephper/yaml-to-test/actions)
+[![npm version](https://img.shields.io/npm/v/yaml-to-test.svg)](https://www.npmjs.com/package/yaml-to-test)
+[![Issues](https://img.shields.io/github/issues/ioncakephper/yaml-to-test.svg)](https://github.com/ioncakephper/yaml-to-test/issues)
+[![Discussions](https://img.shields.io/github/discussions/ioncakephper/yaml-to-test.svg)](https://github.com/ioncakephper/yaml-to-test/discussions)
 
 A command-line utility for converting YAML files into TEST format, designed to streamline configuration and data transformation for testing environments.
 
@@ -51,20 +51,20 @@ A command-line utility for converting YAML files into TEST format, designed to s
 #### Install via npm (recommended):
 
 ```bash
-npm install -g yaml-to-test-cli
+npm install -g yaml-to-test
 ```
 
 #### Or use npx (no global install required):
 
 ```bash
-npx yaml-to-test-cli input.yaml output.test
+npx yaml-to-test input.yaml output.test
 ```
 
 #### Or clone and run locally:
 
 ```bash
-git clone https://github.com/ioncakephper/yaml-to-test-cli.git
-cd yaml-to-test-cli
+git clone https://github.com/ioncakephper/yaml-to-test.git
+cd yaml-to-test
 npm install
 npm link
 ```
