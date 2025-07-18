@@ -127,6 +127,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-For questions, suggestions, or issues, please open an [issue](https://github.com/ioncakephper/yaml-to-test-cli/issues) or join the [Discussions](https://github.com/ioncakephper/yaml-to-test-cli/discussions) on this repository.
+For questions, suggestions, or issues, please open an [issue](https://github.com/ioncakephper/yaml-to-test/issues) or join the [Discussions](https://github.com/ioncakephper/yaml-to-test/discussions) on this repository.
 
 ---
