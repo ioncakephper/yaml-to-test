@@ -48,4 +48,4 @@ function createProgram() {
 
   return program;
 }
-module.exports = createProgram;
+module.exports = { createProgram, loadPackage };
