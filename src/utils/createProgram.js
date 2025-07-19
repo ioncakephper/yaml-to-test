@@ -1,6 +1,7 @@
 const { Command } = require("commander");
 const fs = require("fs");
 const path = require("path");
+const { loadCommands } = require("./loadCommands");
 
 /**
  * @typedef {Object} PackageData
@@ -10,15 +11,18 @@ const path = require("path");
  */
 
 /**
- * This function attempts to read the package.json file and returns its contents.
  * Loads package.json data to provide metadata for the CLI program.
  * @returns {PackageData} - Object with package.json data
  * @throws {Error} - Throws an error if package.json cannot be loaded.
  */
 function loadPackage() {
   const packagePath = path.resolve(__dirname, "../../package.json");
-  const data = fs.readFileSync(packagePath, "utf8");
-  return JSON.parse(data);
+  try {
+    const data = fs.readFileSync(packagePath, "utf8");
+    return JSON.parse(data);
+  } catch (err) {
+    throw new Error(`Failed to load package.json: ${err.message}`);
+  }
 }
 
 /**
@@ -31,7 +35,13 @@ function loadPackage() {
  */
 function createProgram() {
   const program = new Command();
-  const packageData = loadPackage();
+  let packageData = {};
+  try {
+    packageData = loadPackage();
+  } catch (err) {
+    // fallback defaults if package.json fails
+    packageData = {};
+  }
   const { name, version, description } = packageData;
   program.name(typeof name === "string" && name.trim() ? name : "cli-tool");
   program.description(typeof description === "string" && description.trim() ? description : "A CLI tool for various tasks");
@@ -46,6 +56,10 @@ function createProgram() {
     showGlobalOptions: true,
   });
 
+  // Load commands dynamically using the loadCommands function
+  loadCommands(program, path.resolve(__dirname, "../commands"));
+
   return program;
 }
+
 module.exports = { createProgram, loadPackage };
