@@ -1,4 +1,3 @@
-// create a function that updates the program argument using the function defined in each JavaScript file in the commands directory file in the second argument and all its descendants recursively
 const fs = require('fs');
 const path = require('path');
 const { program } = require('commander');
