@@ -40,6 +40,7 @@ function createProgram() {
     packageData = loadPackage();
   } catch (err) {
     // fallback defaults if package.json fails
+    console.error(`Error loading package.json: ${err.message}`);
     packageData = {};
   }
   const { name, version, description } = packageData;
