@@ -1,4 +1,4 @@
-const createProgram = require("./utils/createProgram"); //Should be managed by package.json
+const { createProgram } = require("./utils/createProgram");
 
 /**
  * Initializes and runs the CLI program with the provided arguments.
@@ -10,15 +10,15 @@ function run(args) {
     console.error(
       "Error: Invalid arguments provided.  Args must be an array of strings."
     );
-    return; //Or throw a custom error
+    process.exit(1);
   }
 
   try {
     const program = createProgram();
     program.parse(args);
   } catch (error) {
-    console.error("An error occurred:", error); //More sophisticated logging is recommended in production
-    //Consider process.exit(1) to indicate failure
+    console.error("An unexpected error occurred:", error.message);
+    process.exit(1);
   }
 }
 
