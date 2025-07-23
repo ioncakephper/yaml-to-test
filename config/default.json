@@ -1,0 +1,12 @@
+{
+    "ignore": [
+        "node_modules/**/*",
+        "dist/**/*",
+        "coverage/**/*"
+    ],
+    "patterns": [
+        "**/*.test.{yaml, yml}",
+        "__tests__/**/*.{yaml, yml}"
+    ],
+    "clear": true
+}

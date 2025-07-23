@@ -1,2 +1,9 @@
 #!/usr/bin/env node
-require('../src/index.js').run(process.argv)
+
+const { run } = require('../src/index');
+
+function show() {
+  run(process.argv);
+}
+
+show();

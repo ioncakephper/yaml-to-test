@@ -3,15 +3,18 @@ const { normalizeFlags } = require('../utils/normalizeFlags');
 
 module.exports = function(program) {
   program
-    .command('build')
+    .command('add')
     .description('Build the project')
     .option('-s --sidebars <file>', 'Path to the sidebars file', 'sidebars.js')
     .option('-d,--docs <path>', 'Path to the docs directory', 'docs')
-    .option('--clear', 'Clear before adding')
+    .option('--clear', 'Clear the console')
     .action((options, command) => {
       let merged = mergeConfigWithOptions(command.parent.config, options);
       const allOptions = command.parent.options.concat(command.options);
       merged = normalizeFlags(merged, allOptions);
+      if (options.clear) {
+        console.clear();
+      }
       console.log('Building project');
       console.log('Merged config:', merged);
     })
