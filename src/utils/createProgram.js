@@ -52,13 +52,16 @@ function createProgram() {
   program.option("--debug", "Enable debug mode");
   program.option("--quiet", "Suppress all output except for errors");
 
-  program.configureHelp({
-    sortOptions: true,
-    showGlobalOptions: true,
-  });
+
 
   // Load commands dynamically using the loadCommands function
   loadCommands(program, path.resolve(__dirname, "../commands"));
+
+    program.configureHelp({
+      sortOptions: true,
+      showGlobalOptions: true,
+      sortSubcommands: true,
+    });
 
   return program;
 }
