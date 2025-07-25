@@ -1,5 +1,4 @@
-const { mergeConfigWithOptions } = require('../utils/configLoader');
-const { normalizeFlags } = require('../utils/normalizeFlags');
+const { getMergedOptions } = require('../utils/getMergedOptions');
 
 module.exports = function(program) {
   program
@@ -9,9 +8,7 @@ module.exports = function(program) {
     .option('-d,--docs <path>', 'Path to the docs directory', 'docs')
     .option('--clear', 'Clear before adding')
     .action((options, command) => {
-      let merged = mergeConfigWithOptions(command.parent.config, options);
-      const allOptions = command.parent.options.concat(command.options);
-      merged = normalizeFlags(merged, allOptions);
+      const merged = getMergedOptions(command, options);
       console.log('Building project');
       console.log('Merged config:', merged);
     })
