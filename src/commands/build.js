@@ -2,7 +2,8 @@ const { getMergedOptions } = require('../utils/getMergedOptions');
 
 module.exports = function(program) {
   program
-    .command('build')
+    .command('build', {isDefault: true})
+    .configureHelp({ sortOptions: true, showGlobalOptions: true })
     .description('Build the project')
     .option('-s --sidebars <file>', 'Path to the sidebars file', 'sidebars.js')
     .option('-d,--docs <path>', 'Path to the docs directory', 'docs')
@@ -12,5 +13,6 @@ module.exports = function(program) {
       console.log('Building project');
       console.log('Merged config:', merged);
     })
-    .configureHelp({ sortOptions: true, showGlobalOptions: true });
+
+
 };
