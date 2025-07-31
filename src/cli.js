@@ -41,37 +41,44 @@ function main() {
     // Log a warning if package.json can't be read, but don't exit.
     // Fallback values will be used.
     log(
-      `⚠️ Warning: Could not read or parse package.json: ${error.message}`,
+      `⚠️ warning: could not read or parse package.json: ${error.message}`,
       LOG_LEVELS.WARN
     );
   }
 
+  // Determine the description text, remove trailing punctuation, and ensure first word is lowercase
+  let descriptionText =
+    pkg.description ||
+    "cli tool to generate jest-compatible .test.js files from yaml test definitions";
+  descriptionText = descriptionText.replace(/(\.+\s*)$/, ""); // Remove trailing punctuation first
+
+  // Ensure the first word is lowercase and handle multiple spaces
+  const words = descriptionText.split(/\s+/).filter(Boolean); // Split on one or more spaces, filter out empty strings
+  if (words.length > 0) {
+    words[0] = words[0].toLowerCase();
+  }
+  descriptionText = words.join(" "); // Reconstruct with single spaces
+
   // Set program details from package.json or use fallbacks
   program
     .name(pkg.name || "yaml-to-test")
-    .description(
-      pkg.description ||
-        "CLI tool to generate Jest-compatible .test.js files from YAML test definitions."
-    )
+    .description(descriptionText) // Refactored to ensure lowercase first word and no trailing punctuation
     .version(pkg.version || "1.0.0");
   // --- End package.json loading ---
-
-  // Explicitly add the help command, as the top-level .action() might suppress its automatic inclusion.
-  //   program.addHelpCommand("help [command]", "display help for command");
 
   // Define GLOBAL options (now only logging-related)
   program
     .option(
       "-v, --verbose",
-      "Enable verbose output for more detailed information."
+      "enable verbose output for more detailed information"
     )
     .option(
       "-d, --debug",
-      "Enable debug output for highly detailed debugging information (most verbose)."
+      "enable debug output for highly detailed debugging information (most verbose)"
     )
     .option(
       "-s, --silent",
-      "Suppress all output except critical errors (least verbose)."
+      "suppress all output except critical errors (least verbose)"
     );
 
   // Dynamically load commands from the src/commands directory

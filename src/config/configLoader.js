@@ -43,12 +43,12 @@ function loadAndCompileSchema(schemaPath) {
  * Validates a configuration object against the loaded JSON schema.
  * If validation fails, it logs the errors and exits the process.
  * @param {object} config - The configuration object to validate.
- * @param {string} configFilePath - The path to the configuration file (for logging purposes).
+ * @param {string} sourceDescription - A description of the config source for logging purposes.
  */
-function validateConfig(config, configFilePath) {
+function validateConfig(config, sourceDescription) {
   if (!validateSchema) {
     log(
-      `❌ Error: JSON schema validator not initialized. Cannot validate configuration.`,
+      `❌ error: json schema validator not initialized. cannot validate configuration.`,
       LOG_LEVELS.ERROR
     );
     process.exit(1);
@@ -57,7 +57,7 @@ function validateConfig(config, configFilePath) {
   const isValid = validateSchema(config);
   if (!isValid) {
     log(
-      `\n❌ Error: Configuration file '${configFilePath}' is invalid according to the schema:`,
+      `\n❌ error: configuration from '${sourceDescription}' is invalid according to the schema:`,
       LOG_LEVELS.ERROR
     );
     validateSchema.errors.forEach((err) => {
@@ -69,7 +69,7 @@ function validateConfig(config, configFilePath) {
     process.exit(1);
   }
   log(
-    `Configuration file '${configFilePath}' successfully validated against schema.`,
+    `configuration from '${sourceDescription}' successfully validated against schema.`,
     LOG_LEVELS.DEBUG
   );
 }
@@ -85,12 +85,11 @@ function loadConfigFile(configPath) {
   }
   try {
     const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
-    validateConfig(config, configPath); // Validate immediately after loading
     return config;
   } catch (e) {
     // This catch block handles JSON parsing errors. Schema validation errors are handled by validateConfig.
     log(
-      `⚠️ Warning: Could not parse config file '${configPath}'. Error: ${e.message}`,
+      `⚠️ warning: could not parse config file '${configPath}'. error: ${e.message}`,
       LOG_LEVELS.WARN
     );
     return null;
@@ -124,14 +123,14 @@ function determineLogLevel(options, loadedConfig) {
  * @param {string} mainModuleDir - The __dirname from the main CLI entry point (e.g., src/cli.js),
  * used for robust pathing to the default config file.
  * @returns {{cliConfig: object, configSource: string}} An object containing the consolidated
- * configuration (`cliConfig`) and a string indicating its primary source (`configSource`).
+ * configuration (`cliConfig`) and a string indicating the source of the configuration.
  */
 function loadConfig(cliPatterns, options, mainModuleDir) {
-  let loadedConfig = {};
-  let configSource = "default (no config file found)";
-
   const cliConfigFileName = "yaml-to-test.json";
   const defaultConfigFileName = "default.json";
+  const defaultConfigPath = path.join(
+    mainModuleDir, "../config", defaultConfigFileName
+  );
   const cliConfigPath = path.join(process.cwd(), cliConfigFileName);
   const schemaPath = path.join(
     mainModuleDir,
@@ -144,86 +143,73 @@ function loadConfig(cliPatterns, options, mainModuleDir) {
     loadAndCompileSchema(schemaPath);
   }
 
-  // Prioritize explicit --config file
+  // 1. Load default config as the base. It must exist and be valid.
+  const defaultConfig = loadConfigFile(defaultConfigPath);
+  if (!defaultConfig) {
+    log(
+      `❌ error: default configuration file '${defaultConfigPath}' not found or is invalid. cannot proceed.`,
+      LOG_LEVELS.ERROR
+    );
+    process.exit(1);
+  }
+  // Validate the default config to ensure it's a sound base.
+  validateConfig(defaultConfig, `default config: ${defaultConfigPath}`);
+
+  // 2. Determine which project config to load (custom or standard) and load it.
+  let projectConfig = {};
+  let configSource = `default config: ${defaultConfigPath}`;
+  let projectConfigPath = null;
+
   if (options.config) {
-    const customConfigPath = path.resolve(process.cwd(), options.config);
-    const customLoaded = loadConfigFile(customConfigPath); // Validation happens inside loadConfigFile
-    if (customLoaded === null) {
-      // Error already logged by loadConfigFile if parse error or schema validation fails
-      process.exit(1); // Exit if custom config is not found or invalid
-    }
-    loadedConfig = customLoaded;
-    configSource = `custom config file: ${customConfigPath}`;
+    projectConfigPath = path.resolve(process.cwd(), options.config);
   } else {
-    // Fallback to project config then default config
-    const projectLoaded = loadConfigFile(cliConfigPath); // Validation happens inside loadConfigFile
-    if (projectLoaded) {
-      loadedConfig = projectLoaded;
-      configSource = `project config file: ${cliConfigPath}`;
-    } else {
-      const defaultLoaded = loadConfigFile(
-        path.join(mainModuleDir, "../config", defaultConfigFileName)
-      ); // Validation happens inside loadConfigFile
-      if (defaultLoaded) {
-        loadedConfig = defaultLoaded;
-        configSource = `default config file: ${path.join(
-          mainModuleDir,
-          "../config",
-          defaultConfigFileName
-        )}`;
-      } else {
-        // If default.json itself is missing or invalid, we can't proceed without a base config.
-        log(
-          `❌ Error: Default configuration file '${path.join(
-            mainModuleDir,
-            "../config",
-            defaultConfigFileName
-          )}' not found or is invalid. Cannot proceed without a base configuration.`,
-          LOG_LEVELS.ERROR
-        );
-        process.exit(1);
-      }
-    }
+    projectConfigPath = cliConfigPath;
   }
 
-  // Consolidate all configuration into a single object
+  const loadedProjectConfig = loadConfigFile(projectConfigPath);
+  if (loadedProjectConfig) {
+    projectConfig = loadedProjectConfig;
+    configSource = `project config: ${projectConfigPath}`;
+  } else if (options.config) {
+    // If a custom config was specified with --config but not found, it's an error.
+    log(
+      `❌ error: custom configuration file specified with --config was not found at '${projectConfigPath}'.`,
+      LOG_LEVELS.ERROR
+    );
+    process.exit(1);
+  }
+
+  // 3. Merge default and project configs. Project config values override default values.
+  const mergedConfig = { ...defaultConfig, ...projectConfig };
+
+  // 4. Validate the MERGED configuration. This ensures the final combination is valid
+  // and prevents unknown keys from the project config file.
+  validateConfig(mergedConfig, configSource);
+
+  // 5. Consolidate final config by overriding with command-line options.
   const cliConfig = {
-    // Log Level
-    logLevel: determineLogLevel(options, loadedConfig),
-    // Patterns
+    logLevel: determineLogLevel(options, mergedConfig),
     effectivePatterns:
-      cliPatterns.length > 0 ? cliPatterns : loadedConfig.patterns || [],
-    // Ignore Patterns
+      cliPatterns.length > 0 ? cliPatterns : mergedConfig.patterns || [],
     effectiveIgnorePatterns: (() => {
       const baseRequiredIgnores = ["**/*.test.js"];
       if (options.ignore && options.ignore.length > 0) {
         return [...baseRequiredIgnores, ...options.ignore];
-      } else if (
-        loadedConfig.ignore &&
-        Array.isArray(loadedConfig.ignore) &&
-        loadedConfig.ignore.length > 0
-      ) {
-        return [...baseRequiredIgnores, ...loadedConfig.ignore];
       }
-      return [...baseRequiredIgnores, "node_modules", ".git"];
+      return [...baseRequiredIgnores, ...(mergedConfig.ignore || [])];
     })(),
-    // Dry Run
-    isDryRun: options.dryRun || loadedConfig.dryRun || false,
-    // Test Keyword
-    testKeyword: options.testKeyword || loadedConfig.testKeyword || "it",
-    // Watch Mode
+    isDryRun: options.dryRun !== undefined ? options.dryRun : mergedConfig.dryRun,
+    testKeyword: options.testKeyword || mergedConfig.testKeyword,
     watchMode: options.watch || false,
-    // No Cleanup
-    noCleanup: options.noCleanup || loadedConfig.noCleanup || false,
-    // Init command options (quick and force)
+    noCleanup: options.noCleanup !== undefined ? options.noCleanup : mergedConfig.noCleanup,
     quick:
       typeof options.quick !== "undefined"
         ? options.quick
-        : loadedConfig.quick || false,
+        : mergedConfig.quick || false,
     force:
       typeof options.force !== "undefined"
         ? options.force
-        : loadedConfig.force || false,
+        : mergedConfig.force || false,
   };
 
   // Ensure uniqueness of ignore patterns

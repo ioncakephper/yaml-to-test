@@ -21,30 +21,50 @@ const { startWatcher } = require("../core/watcher");
  * @param {string[]} cliPatterns - Patterns from the CLI.
  * @param {object} options - Options from the CLI.
  */
-function logConfigurationDetails(cliConfig, configSource, cliPatterns, options) {
-  log(`🚀 Starting YAML to Test CLI (generate command)...`, LOG_LEVELS.INFO);
-  log(`⚙️ Effective configuration sourced from: ${configSource}`, LOG_LEVELS.INFO);
+function logConfigurationDetails(
+  cliConfig,
+  configSource,
+  cliPatterns,
+  options
+) {
+  log(`🚀 starting yaml to test cli (generate command)...`, LOG_LEVELS.INFO); // Adjusted for lowercase consistency
+  log(
+    `⚙️ effective configuration sourced from: ${configSource}`,
+    LOG_LEVELS.INFO
+  );
 
   if (cliPatterns.length > 0) {
-    log(`Override: Using patterns from command line arguments.`, LOG_LEVELS.INFO);
+    log(
+      `override: using patterns from command line arguments.`,
+      LOG_LEVELS.INFO
+    ); // Adjusted for lowercase consistency
   }
   if (options.ignore && options.ignore.length > 0) {
-    log(`Override: Using ignore patterns from command line arguments.`, LOG_LEVELS.INFO);
+    log(
+      `override: using ignore patterns from command line arguments.`,
+      LOG_LEVELS.INFO
+    ); // Adjusted for lowercase consistency
   }
   if (options.dryRun) {
-    log(`Override: Dry Run mode enabled from command line.`, LOG_LEVELS.INFO);
+    log(`override: dry run mode enabled from command line.`, LOG_LEVELS.INFO); // Adjusted for lowercase consistency
   } else if (cliConfig.isDryRun) {
-    log(`Dry Run mode enabled from configuration.`, LOG_LEVELS.INFO);
+    log(`dry run mode enabled from configuration.`, LOG_LEVELS.INFO); // Adjusted for lowercase consistency
   }
   if (options.testKeyword) {
-    log(`Override: Using '${cliConfig.testKeyword}.todo' for test blocks from command line.`, LOG_LEVELS.INFO);
+    log(
+      `override: using '${cliConfig.testKeyword}.todo' for test blocks from command line.`,
+      LOG_LEVELS.INFO
+    ); // Adjusted for lowercase consistency
   } else if (cliConfig.testKeyword !== "it") {
-    log(`Using '${cliConfig.testKeyword}.todo' for test blocks from configuration.`, LOG_LEVELS.INFO);
+    log(
+      `using '${cliConfig.testKeyword}.todo' for test blocks from configuration.`,
+      LOG_LEVELS.INFO
+    ); // Adjusted for lowercase consistency
   }
   if (options.noCleanup) {
-    log(`Override: Cleanup disabled from command line.`, LOG_LEVELS.INFO);
+    log(`override: cleanup disabled from command line.`, LOG_LEVELS.INFO); // Adjusted for lowercase consistency
   } else if (cliConfig.noCleanup) {
-    log(`Cleanup disabled from configuration.`, LOG_LEVELS.INFO);
+    log(`cleanup disabled from configuration.`, LOG_LEVELS.INFO); // Adjusted for lowercase consistency
   }
 }
 
@@ -54,11 +74,22 @@ function logConfigurationDetails(cliConfig, configSource, cliPatterns, options) 
  */
 function runWatchMode(cliConfig) {
   if (cliConfig.isDryRun) {
-    log(`Warning: --dry-run is enabled. No files will be written even in watch mode.`, LOG_LEVELS.WARN);
+    log(
+      `warning: --dry-run is enabled. no files will be written even in watch mode.`,
+      LOG_LEVELS.WARN
+    ); // Adjusted for lowercase consistency
   }
-  log(`\n👀 Entering watch mode for patterns: ${cliConfig.effectivePatterns.join(", ")}`, LOG_LEVELS.INFO);
-  log(`Excluding: ${cliConfig.effectiveIgnorePatterns.join(", ")}`, LOG_LEVELS.INFO);
-  log(`(Press Ctrl+C to exit)`, LOG_LEVELS.INFO);
+  log(
+    `\n👀 entering watch mode for patterns: ${cliConfig.effectivePatterns.join(
+      ", "
+    )}`,
+    LOG_LEVELS.INFO
+  ); // Adjusted for lowercase consistency
+  log(
+    `excluding: ${cliConfig.effectiveIgnorePatterns.join(", ")}`,
+    LOG_LEVELS.INFO
+  ); // Adjusted for lowercase consistency
+  log(`(press ctrl+c to exit)`, LOG_LEVELS.INFO); // Adjusted for lowercase consistency
   startWatcher(cliConfig, processFile);
 }
 
@@ -67,14 +98,22 @@ function runWatchMode(cliConfig) {
  * @param {object} cliConfig - The final configuration object.
  */
 function runSinglePass(cliConfig) {
-  log(`🔍 Using effective patterns: ${cliConfig.effectivePatterns.join(", ")}`, LOG_LEVELS.INFO);
-  log(`Excluding: ${cliConfig.effectiveIgnorePatterns.join(", ")}`, LOG_LEVELS.INFO);
+  // No longer async as glob.sync is used
+  log(
+    `🔍 using effective patterns: ${cliConfig.effectivePatterns.join(", ")}`,
+    LOG_LEVELS.INFO
+  ); // Adjusted for lowercase consistency
+  log(
+    `excluding: ${cliConfig.effectiveIgnorePatterns.join(", ")}`,
+    LOG_LEVELS.INFO
+  ); // Adjusted for lowercase consistency
 
   let filesFound = 0;
   let filesProcessed = 0;
 
   for (const pattern of cliConfig.effectivePatterns) {
     try {
+      // Switched to synchronous glob.sync
       const matchingFiles = glob.sync(pattern, {
         absolute: true,
         nodir: true,
@@ -82,82 +121,86 @@ function runSinglePass(cliConfig) {
       });
 
       if (matchingFiles.length === 0) {
-        log(`⚠️ No YAML files found for pattern: '${pattern}'`, LOG_LEVELS.WARN);
+        log(
+          `⚠️ no yaml files found for pattern: '${pattern}'`,
+          LOG_LEVELS.WARN
+        ); // Adjusted for lowercase consistency
       } else {
-        log(`Found ${matchingFiles.length} files for pattern '${pattern}'.`, LOG_LEVELS.INFO);
+        log(
+          `found ${matchingFiles.length} files for pattern '${pattern}'.`,
+          LOG_LEVELS.INFO
+        ); // Adjusted for lowercase consistency
         filesFound += matchingFiles.length;
         matchingFiles.forEach((file) => processFile(file, cliConfig));
         filesProcessed += matchingFiles.length;
       }
     } catch (err) {
-      log(`❌ Error finding files for pattern '${pattern}': ${err.message}`, LOG_LEVELS.ERROR);
+      log(
+        `❌ error finding files for pattern '${pattern}': ${err.message}`,
+        LOG_LEVELS.ERROR
+      ); // Adjusted for lowercase consistency
     }
   }
 
   if (filesFound > 0) {
-    log(`\n✨ CLI execution complete. Processed ${filesProcessed} of ${filesFound} YAML files.`, LOG_LEVELS.INFO);
+    log(
+      `\n✨ cli execution complete. processed ${filesProcessed} of ${filesFound} yaml files.`,
+      LOG_LEVELS.INFO
+    ); // Adjusted for lowercase consistency
   } else {
-    log(`\n🤷 No YAML files were found or processed based on the provided patterns.`, LOG_LEVELS.INFO);
+    log(
+      `\n🤷 no yaml files were found or processed based on the provided patterns.`,
+      LOG_LEVELS.INFO
+    ); // Adjusted for lowercase consistency
   }
 }
 
 /**
  * Registers the 'generate' command with the Commander.js program.
- * This command handles the core functionality of finding YAML files and generating
- * Jest test files, supporting watch mode, dry runs, and various configuration options.
- *
+ * This command, which can be run as the default, finds and processes YAML files
+ * to generate test files. It supports watch mode, dry runs, and inherits
+ * global logging options.
  * @param {Command} program - The Commander.js program instance.
  */
 module.exports = (program) => {
   program
     .command("generate", { isDefault: true })
     .alias("g")
-    .description("Generates Jest test files from YAML definitions.")
+    .description("generate jest test files from yaml definitions") // Changed to lowercase
     .argument(
       "[patterns...]",
-      "One or more glob patterns for YAML files. Overrides config.",
+      "one or more glob patterns for yaml files. overrides config", // Changed to lowercase
       []
     )
     .option(
       "-w, --watch",
-      "Watch for changes in YAML files and regenerate test files automatically."
+      "watch for changes in yaml files and regenerate test files automatically" // Changed to lowercase
     )
     .option(
       "-c, --config <filename>",
-      "Specify a custom configuration file to load patterns from. Overrides default cascade."
+      "specify a custom configuration file to load patterns from. overrides default cascade" // Changed to lowercase
     )
     .option(
       "-i, --ignore <patterns...>",
-      "List of glob file patterns to exclude from matched files. Overrides config.",
+      "list of glob file patterns to exclude from matched files. overrides config", // Changed to lowercase
       []
     )
     .option(
-      "-v, --verbose",
-      "Enable verbose output for more detailed information."
-    )
-    .option(
-      "-d, --debug",
-      "Enable debug output for highly detailed debugging information (most verbose)."
-    )
-    .option(
-      "-s, --silent",
-      "Suppress all output except critical errors (least verbose)."
-    )
-    .option(
       "-n, --dry-run",
-      "Perform a dry run: simulate file generation without writing to disk."
+      "perform a dry run: simulate file generation without writing to disk" // Changed to lowercase
     )
     .option(
       "-k, --test-keyword <keyword>",
-      "Specify keyword for test blocks (it or test).",
+      "specify keyword for test blocks (it or test)", // Changed to lowercase
       "it"
     )
     .option(
       "--no-cleanup",
-      "Do not delete generated .test.js files when source YAML is unlinked in watch mode."
+      "do not delete generated .test.js files when source yaml is unlinked in watch mode" // Changed to lowercase
     )
     .configureHelp({ sortOptions: true })
     .action((cliPatterns, options) => {
+      // Removed 'async' from action as runSinglePass is no longer async
       // Pass __dirname of the main CLI entry point (src/cli.js) to loadConfig
       // This ensures configLoader can correctly find the default.json
       const mainCliDir = path.join(__dirname, "../"); // Go up from src/commands/ to src/
@@ -172,9 +215,9 @@ module.exports = (program) => {
 
       if (cliConfig.effectivePatterns.length === 0) {
         log(
-          `\n⚠️ No patterns specified via command line or configuration files.
-Please provide patterns as arguments (e.g., 'yaml-to-test generate "tests/**/*.yaml"')
-or define them in a config file (e.g., 'yaml-to-test --config my-patterns.json').`,
+          `\n⚠️ no patterns specified via command line or configuration files.
+please provide patterns as arguments (e.g., 'yaml-to-test generate "tests/**/*.yaml"')
+or define them in a config file (e.g., 'yaml-to-test --config my-patterns.json').`, // Adjusted for lowercase consistency
           LOG_LEVELS.WARN
         );
         program.help();

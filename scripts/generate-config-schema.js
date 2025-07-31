@@ -94,11 +94,12 @@ try {
           "For the 'init' command: Force overwriting the configuration file if it already exists.",
         default: defaultConfig.force,
       },
-      noDefaults: {
+      "no-defaults": {
+        // Changed to no-defaults
         type: "boolean",
         description:
           "For the 'init' command: Only include settings in the generated file whose values differ from defaults.",
-        default: defaultConfig.noDefaults,
+        default: defaultConfig["no-defaults"], // Access with kebab-case
       },
     },
     additionalProperties: false,
@@ -113,7 +114,7 @@ try {
       "noCleanup",
       "quick",
       "force",
-      "noDefaults",
+      "no-defaults",
     ],
   };
 

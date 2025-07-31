@@ -11,8 +11,11 @@
         "type": "string"
       },
       "default": [
-        "tests/**/*.yaml",
-        "features/*.yml"
+        "**/__tests__/**/*.{yaml,yml}",
+        "**/*.test.{yaml,yml}",
+        "**/*.spec.{yaml,yml}",
+        "tests/**/*.{yaml,yml}",
+        "features/**/*.{yaml,yml}"
       ]
     },
     "ignore": {
@@ -24,7 +27,7 @@
       "default": [
         "node_modules",
         ".git",
-        "temp_files/**/*.yaml"
+        "temp_files/**/*.{yaml,yml}"
       ]
     },
     "verbose": {
@@ -71,7 +74,7 @@
       "description": "For the 'init' command: Force overwriting the configuration file if it already exists.",
       "default": false
     },
-    "noDefaults": {
+    "no-defaults": {
       "type": "boolean",
       "description": "For the 'init' command: Only include settings in the generated file whose values differ from defaults.",
       "default": false
@@ -89,6 +92,6 @@
     "noCleanup",
     "quick",
     "force",
-    "noDefaults"
+    "no-defaults"
   ]
 }
