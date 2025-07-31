@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "yaml-to-test Configuration",
+  "description": "Schema for the yaml-to-test CLI configuration file (default.json or yaml-to-test.json).\nThis schema provides autocompletion and validation in compatible IDEs.",
+  "type": "object",
+  "properties": {
+    "patterns": {
+      "type": "array",
+      "description": "One or more glob patterns for YAML files to be processed (e.g., 'tests/**/*.yaml').",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "tests/**/*.yaml",
+        "features/*.yml"
+      ]
+    },
+    "ignore": {
+      "type": "array",
+      "description": "List of glob file patterns to exclude from matched files (e.g., '**/temp/*.yaml').",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "node_modules",
+        ".git",
+        "temp_files/**/*.yaml"
+      ]
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "Enable verbose output for more detailed information.",
+      "default": false
+    },
+    "debug": {
+      "type": "boolean",
+      "description": "Enable debug output for highly detailed debugging information (most verbose).",
+      "default": false
+    },
+    "silent": {
+      "type": "boolean",
+      "description": "Suppress all output except critical errors (least verbose).",
+      "default": false
+    },
+    "dryRun": {
+      "type": "boolean",
+      "description": "Perform a dry run: simulate file generation without writing to disk.",
+      "default": false
+    },
+    "testKeyword": {
+      "type": "string",
+      "description": "Specify keyword for test blocks ('it' or 'test').",
+      "enum": [
+        "it",
+        "test"
+      ],
+      "default": "it"
+    },
+    "noCleanup": {
+      "type": "boolean",
+      "description": "Do not delete generated .test.js files when source YAML is unlinked in watch mode.",
+      "default": false
+    },
+    "quick": {
+      "type": "boolean",
+      "description": "For the 'init' command: Skip asking questions and generate the configuration file with default values.",
+      "default": false
+    },
+    "force": {
+      "type": "boolean",
+      "description": "For the 'init' command: Force overwriting the configuration file if it already exists.",
+      "default": false
+    },
+    "noDefaults": {
+      "type": "boolean",
+      "description": "For the 'init' command: Only include settings in the generated file whose values differ from defaults.",
+      "default": false
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "patterns",
+    "ignore",
+    "verbose",
+    "debug",
+    "silent",
+    "dryRun",
+    "testKeyword",
+    "noCleanup",
+    "quick",
+    "force",
+    "noDefaults"
+  ]
+}

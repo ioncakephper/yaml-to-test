@@ -1,24 +1,36 @@
 {
   "name": "yaml-to-test",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
+  "description": "CLI tool to generate Jest-compatible .test.js files from YAML test definitions.",
+  "main": "src/cli.js",
   "bin": {
-    "mycli": "bin/cli.js"
+    "yaml-to-test": "./src/cli.js"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "generate-schema": "node scripts/generate-config-schema.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ioncakephper/yaml-to-test"
-  },
+  "keywords": [
+    "cli",
+    "jest",
+    "yaml",
+    "testing"
+  ],
   "author": "ioncakephper",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/yaml-to-test.git"
+  },
   "dependencies": {
-    "commander": "^14.0.0"
+    "ajv": "^8.16.0",
+    "chokidar": "^3.6.0",
+    "commander": "^12.0.0",
+    "glob": "^10.4.0",
+    "inquirer": "^8.2.4",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "jest": "^30.0.4"
+    "jest": "^30.0.5"
   }
 }
