@@ -27,7 +27,7 @@ function logConfigurationDetails(
   cliPatterns,
   options
 ) {
-  log(`🚀 starting yaml to test cli (generate command)...`, LOG_LEVELS.INFO); // Adjusted for lowercase consistency
+  log(`🚀 starting testweaver cli (generate command)...`, LOG_LEVELS.INFO); // Adjusted for lowercase consistency
   log(
     `⚙️ effective configuration sourced from: ${configSource}`,
     LOG_LEVELS.INFO
@@ -216,8 +216,8 @@ module.exports = (program) => {
       if (cliConfig.effectivePatterns.length === 0) {
         log(
           `\n⚠️ no patterns specified via command line or configuration files.
-please provide patterns as arguments (e.g., 'yaml-to-test generate "tests/**/*.yaml"')
-or define them in a config file (e.g., 'yaml-to-test --config my-patterns.json').`, // Adjusted for lowercase consistency
+please provide patterns as arguments (e.g., 'testweaver generate "tests/**/*.yaml"')
+or define them in a config file (e.g., 'testweaver --config my-patterns.json').`, // Adjusted for lowercase consistency
           LOG_LEVELS.WARN
         );
         program.help();

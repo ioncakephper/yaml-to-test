@@ -1,37 +1,38 @@
-# YAML to TEST CLI Tool
+# TestWeaver
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Node.js CI](https://github.com/ioncakephper/yaml-to-test/actions/workflows/node.js.yml/badge.svg)](https://github.com/ioncakephper/yaml-to-test/actions)
-[![npm version](https://img.shields.io/npm/v/yaml-to-test.svg)](https://www.npmjs.com/package/yaml-to-test)
-[![Issues](https://img.shields.io/github/issues/ioncakephper/yaml-to-test.svg)](https://github.com/ioncakephper/yaml-to-test/issues)
-[![Discussions](https://img.shields.io/github/discussions/ioncakephper/yaml-to-test.svg)](https://github.com/ioncakephper/yaml-to-test/discussions)
+[![Node.js CI](https://github.com/ioncakephper/testweaver/actions/workflows/node.js.yml/badge.svg)](https://github.com/ioncakephper/testweaver/actions)
+[![npm version](https://img.shields.io/npm/v/testweaver.svg)](https://www.npmjs.com/package/testweaver)
+[![Issues](https://img.shields.io/github/issues/ioncakephper/testweaver.svg)](https://github.com/ioncakephper/testweaver/issues)
+[![Discussions](https://img.shields.io/github/discussions/ioncakephper/testweaver.svg)](https://github.com/ioncakephper/testweaver/discussions)
 
-A command-line utility for converting YAML files into TEST format, designed to streamline configuration and data transformation for testing environments.
+A command-line utility that skillfully weaves Jest-compatible test files from simple, declarative YAML threads.
 
 ---
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [Features](#features)
-- [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [Steps](#steps)
-    - [Install via npm (recommended):](#install-via-npm-recommended)
-    - [Or use npx (no global install required):](#or-use-npx-no-global-install-required)
-    - [Or clone and run locally:](#or-clone-and-run-locally)
-- [Usage](#usage)
-- [Examples](#examples)
-- [Configuration](#configuration)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+- [TestWeaver](#testweaver)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
+      - [Install via npm (recommended):](#install-via-npm-recommended)
+      - [Or use npx (no global install required):](#or-use-npx-no-global-install-required)
+      - [Or clone and run locally:](#or-clone-and-run-locally)
+  - [Usage](#usage)
+  - [Examples](#examples)
+  - [Configuration](#configuration)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
 
 ---
 
 ## Features
 
-- Fast and reliable YAML to TEST format conversion
+- Fast and reliable YAML to Jest test file generation
 - Batch processing of multiple files and directories
 - Customizable output options
 - Input validation and error reporting
@@ -51,7 +52,7 @@ A command-line utility for converting YAML files into TEST format, designed to s
 #### Install via npm (recommended):
 
 ```bash
-npm install -g yaml-to-test
+npm install -g testweaver
 ```
 
 #### Or use npx (no global install required):
@@ -108,7 +109,7 @@ yaml-to-test ./yamls/*.yaml --output-dir ./tests/
 
 You can customize the conversion process using command-line flags or a configuration file. For all available options, run:
 ```bash
-yaml-to-test --help
+testweaver --help
 ```
 
 ---
@@ -127,6 +128,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-For questions, suggestions, or issues, please open an [issue](https://github.com/ioncakephper/yaml-to-test/issues) or join the [Discussions](https://github.com/ioncakephper/yaml-to-test/discussions) on this repository.
+For questions, suggestions, or issues, please open an [issue](https://github.com/ioncakephper/testweaver/issues) or join the [Discussions](https://github.com/ioncakephper/testweaver/discussions) on this repository.
 
 ---

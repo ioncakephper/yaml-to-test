@@ -2,7 +2,7 @@
 
 /**
  * @file src/cli.js
- * @description Main entry point for the YAML to Test CLI.
+ * @description Main entry point for the TestWeaver CLI.
  * Orchestrates configuration loading, logging, and dynamic command loading.
  * Global options are now limited to logging verbosity.
  * @author Your Name/AI Assistant
@@ -49,7 +49,7 @@ function main() {
   // Determine the description text, remove trailing punctuation, and ensure first word is lowercase
   let descriptionText =
     pkg.description ||
-    "cli tool to generate jest-compatible .test.js files from yaml test definitions";
+    "a cli tool that weaves jest-compatible .test.js files from simple yaml definitions";
   descriptionText = descriptionText.replace(/(\.+\s*)$/, ""); // Remove trailing punctuation first
 
   // Ensure the first word is lowercase and handle multiple spaces
@@ -61,7 +61,7 @@ function main() {
 
   // Set program details from package.json or use fallbacks
   program
-    .name(pkg.name || "yaml-to-test")
+    .name(pkg.name || "testweaver")
     .description(descriptionText) // Refactored to ensure lowercase first word and no trailing punctuation
     .version(pkg.version || "1.0.0");
   // --- End package.json loading ---
@@ -84,19 +84,6 @@ function main() {
   // Dynamically load commands from the src/commands directory
   const commandsDirPath = path.join(__dirname, "commands");
   loadCommands(program, commandsDirPath);
-
-  // Set a default action if no command is specified.
-  // This will display help if `yaml-to-test` is run without arguments or a command.
-  //   program.action(() => {
-  //     // If no explicit command was matched by Commander, and no arguments were given,
-  //     // or if an unknown command was given, display help.
-  //     if (
-  //       program.args.length === 0 ||
-  //       !program.commands.some((cmd) => cmd.name() === program.args[0])
-  //     ) {
-  //       program.help();
-  //     }
-  //   });
 
   // Configure help output to sort options alphabetically
   program.configureHelp({

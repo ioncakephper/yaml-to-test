@@ -1,7 +1,7 @@
 /**
  * @file src/commands/init.js
  * @description Defines the 'init' command for the CLI, which creates a default
- * yaml-to-test.json configuration file in the current directory.
+ * testweaver.json configuration file in the current directory.
  * Now includes an interactive mode using Inquirer.js when --quick is false,
  * and supports a --no-defaults flag to only output changed settings.
  * Includes validation for the output filename.
@@ -34,7 +34,7 @@ function arraysEqual(arr1, arr2) {
 
 /**
  * Registers the 'init' command with the Commander.js program.
- * This command creates a default `yaml-to-test.json` configuration file in the
+ * This command creates a default `testweaver.json` configuration file in the
  * current working directory, using settings from `config/default.json` or
  * hardcoded fallbacks if the default config is unavailable.
  * It supports an interactive mode or quick generation based on flags,
@@ -62,7 +62,7 @@ module.exports = (program) => {
     ) // Changed to lowercase
     .action(async (filename, options) => {
       // Made action async for inquirer
-      const cliConfigFileName = "yaml-to-test.json";
+      const cliConfigFileName = "testweaver.json";
       let actualConfigFileName = filename || cliConfigFileName;
 
       // --- Filename Validation and Correction ---
@@ -340,7 +340,7 @@ module.exports = (program) => {
           LOG_LEVELS.INFO
         ); // Adjusted for lowercase consistency
         log(
-          `you can now customize this file or run 'yaml-to-test generate' without patterns.`,
+          `you can now customize this file or run 'testweaver generate' without patterns.`,
           LOG_LEVELS.INFO
         ); // Adjusted for lowercase consistency
         process.exit(0);

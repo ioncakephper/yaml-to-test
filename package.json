@@ -1,10 +1,10 @@
 {
-  "name": "yaml-to-test",
+  "name": "test-weaver",
   "version": "1.0.0",
-  "description": "CLI tool to generate Jest-compatible .test.js files from YAML test definitions.",
+  "description": "A CLI tool that weaves Jest-compatible .test.js files from simple YAML definitions.",
   "main": "src/cli.js",
   "bin": {
-    "yaml-to-test": "./src/cli.js"
+    "testweaver": "./src/cli.js"
   },
   "scripts": {
     "test": "jest",
@@ -20,7 +20,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/yaml-to-test.git"
+    "url": "https://github.com/ioncakephper/test-weaver.git"
   },
   "dependencies": {
     "ajv": "^8.16.0",

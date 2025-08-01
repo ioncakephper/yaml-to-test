@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "yaml-to-test Configuration",
-  "description": "Schema for the yaml-to-test CLI configuration file (default.json or yaml-to-test.json).\nThis schema provides autocompletion and validation in compatible IDEs.",
+  "title": "TestWeaver Configuration",
+  "description": "Schema for the TestWeaver CLI configuration file (default.json or testweaver.json).\nThis schema provides autocompletion and validation in compatible IDEs.",
   "type": "object",
   "properties": {
     "patterns": {

@@ -1,7 +1,7 @@
 /**
  * @file src/config/configLoader.js
  * @description Handles loading and consolidating CLI configuration from cascaded sources:
- * command-line options, project config file (yaml-to-test.json), and default config file.
+ * command-line options, project config file (testweaver.json), and default config file.
  * Includes JSON Schema validation for loaded configuration files.
  * @author Your Name/AI Assistant
  * @license MIT
@@ -126,7 +126,7 @@ function determineLogLevel(options, loadedConfig) {
  * configuration (`cliConfig`) and a string indicating the source of the configuration.
  */
 function loadConfig(cliPatterns, options, mainModuleDir) {
-  const cliConfigFileName = "yaml-to-test.json";
+  const cliConfigFileName = "testweaver.json";
   const defaultConfigFileName = "default.json";
   const defaultConfigPath = path.join(
     mainModuleDir, "../config", defaultConfigFileName
